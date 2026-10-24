@@ -1,0 +1,46 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css"><style>
+h1{position:absolute;left:80px;top:50px;font:40px var(--f-display);letter-spacing:.04em}
+.sub{position:absolute;left:80px;top:104px;width:520px;font:14px var(--f-mono);color:var(--readout)}
+.states{position:absolute;left:80px;top:180px;display:flex;flex-direction:column;gap:60px}
+.state{display:flex;align-items:center;gap:30px}.state em{font:14px var(--f-mono);color:var(--readout);font-style:normal;width:80px}
+.fab{width:92px;height:92px;border-radius:50%;background:var(--vinyl);border:4px solid var(--hazard);box-shadow:0 8px 18px rgba(0,0,0,.6);overflow:hidden;position:relative}
+.fab .face{position:absolute;left:5px;top:6px;width:81px;height:80px;background:url(bambo.png) 0 0/81px 155px no-repeat;image-rendering:pixelated}
+.fab.hover{border-color:var(--glow);box-shadow:0 8px 18px rgba(0,0,0,.6),var(--glow-lg);transform:translateY(-3px)}
+.fab.open{border-color:var(--glow);background:var(--glow-deep)}
+.fab.open::after{content:"✕";position:absolute;inset:0;display:grid;place-items:center;font:700 34px var(--f-body);color:var(--paper)}
+.tip{background:var(--hazard-ink);border:1px solid var(--glow);color:var(--glow);font:14px var(--f-mono);padding:6px 12px;border-radius:6px}
+.panel{position:absolute;right:80px;top:60px;width:720px;height:760px;border-radius:var(--r-lg);overflow:hidden;box-shadow:0 30px 60px #000,0 0 0 2px #0a0d0b;display:flex;flex-direction:column;background:var(--paper)}
+.ph{height:70px;display:flex;align-items:center;gap:14px;padding:0 20px;background:var(--hazard-ink);border-bottom:8px solid;border-image:var(--hazard-stripes) 8}
+.ph b{font:26px var(--f-display);letter-spacing:.04em;color:var(--paper)}.ph span{font:13px var(--f-mono);color:var(--glow)}
+.body{flex:1;display:flex;color:var(--ink)}
+.prof{width:220px;background:var(--noise),linear-gradient(#2e3832,#1a201c);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:24px;border-right:3px solid #0a0d0b}
+.prof img{width:162px;height:310px;image-rendering:pixelated;filter:drop-shadow(0 0 10px rgba(139,226,74,.35))}
+.prof small{font:12px var(--f-mono);color:var(--readout);margin-top:10px}
+.log{flex:1;padding:20px;display:flex;flex-direction:column;gap:14px;background:var(--noise),repeating-linear-gradient(transparent 0 27px,rgba(47,107,26,.14) 27px 28px);background-color:var(--paper);background-blend-mode:multiply}
+.msg{max-width:88%;padding:10px 14px;border-radius:10px;font-size:15px;line-height:1.5}
+.msg.p{background:#fffaf0;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink)}
+.msg.u{align-self:flex-end;background:var(--vinyl);color:var(--paper)}
+.msg cite{display:block;font:12px var(--f-mono);color:var(--muted);margin-top:6px;font-style:normal}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chips span{font:13px var(--f-mono);border:1px solid var(--glow-deep);color:var(--glow-deep);padding:3px 10px;border-radius:20px}
+.in{display:flex;gap:10px;padding:14px;background:var(--hazard-ink)}
+.in div{flex:1;background:var(--screen);border:1px solid var(--glow-deep);border-radius:6px;font:15px var(--f-mono);color:var(--readout);padding:10px 12px}
+.in button{background:var(--glow);color:var(--hazard-ink);border:0;border-radius:6px;font:20px var(--f-display);padding:0 22px;box-shadow:var(--glow-sm)}
+</style></head><body>
+<h1>Ask the Professor</h1><div class="sub">Floating chat button: idle / hover / open<br>Bamb&#39;o sprite: 1&times; in button, 2&times; in panel (integer scaling only)</div>
+<div class="states">
+<div class="state"><em>IDLE</em><div class="fab"><div class="face"></div></div></div>
+<div class="state"><em>HOVER</em><div class="fab hover"><div class="face"></div></div><div class="tip">Ask Prof. Bamb'o</div></div>
+<div class="state"><em>OPEN</em><div class="fab open"></div><div class="tip">Close chat</div></div>
+</div>
+<div class="panel"><div class="ph"><b>Professor Bamb'o</b><span>● LINKED TO FIELD BINDER DATA</span></div>
+<div class="body"><div class="prof"><img src="bambo.png" alt="Professor Bamb'o sprite"><small>2× · pixelated</small></div>
+<div class="log">
+<div class="msg p">Welcome to Tandor! Ask me about a route, a gym or what changed in the latest patch.</div>
+<div class="msg u">What changed with Exp All in 1.4.0?</div>
+<div class="msg p">The 2026 patch notes place Exp All on the Route 4→10 path, and 1.4.0b fixed an issue with it. Check the PokéPod's ITEMS tab for the spot. <span class="sample">SAMPLE REPLY</span><cite>Source: 2026 Patch Notes · pokemon-uranium.fandom.com</cite></div>
+<div class="msg u">Who leads the Nowtoch Gym?</div>
+<div class="msg p">I'm still double-checking the leader list against the wiki, so I won't guess yet. <span class="sample">SAMPLE REPLY</span></div>
+<div class="chips"><span>Route 1 wild list</span><span>Patch 1.4.1</span><span>Nuclear Plant Zeta</span></div>
+</div></div>
+<div class="in"><div>Ask about Tandor…</div><button>SEND</button></div></div>
+<div class="footer">UNOFFICIAL FAN PROJECT</div></body></html>

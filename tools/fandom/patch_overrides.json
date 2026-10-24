@@ -1,0 +1,15 @@
+{"source":"https://pokemon-uranium.fandom.com/wiki/2026_Patch_Notes","note":"Applied LAST by build.py. status: 'patch' = stated in the official patch notes; 'unverified' = the notes are vague (no location/name given).",
+"items":[
+ {"id":"expall","ver":"1.4.0 / 1.4.0b","part":6,"loc":"Route 10","item":"Exp All","where":"Near the Route 4 → Route 10 entrance; toggle on/off (1.4.0b fixed pickup)","text":"<b>Exp All</b> is now obtainable near the Route 4 → Route 10 entrance and can be toggled on and off (1.4.0; pickup fixed in 1.4.0b; a double-KO crash with it on was fixed in 1.4.1).","status":"patch"},
+ {"id":"fly","ver":"1.4.0","part":6,"loc":"Route 9","text":"You can now <b>Fly</b> to the Daycare and to the Route 4 → Route 10 entrance.","status":"patch"},
+ {"id":"pcs","ver":"1.4.0","part":7,"loc":"Venesi City","text":"New working PCs include the <b>Move Deleter house</b> (location of that house is assumed to be the Venesi one — unverified) and the Epsilon rest house.","status":"unverified"},
+ {"id":"r8heal","ver":"1.4.0","part":5,"loc":"Route 8","text":"A bug with the healing lady on Route 8 was fixed.","status":"patch"},
+ {"id":"r14","ver":"1.4.0","part":9,"loc":"Route 14","text":"The plot encounter on Route 14 can no longer be skipped.","status":"patch"},
+ {"id":"actan","ver":"1.4.0","part":11,"text":"<b>Actan</b> now respawns daily if you haven't caught it.","status":"patch"},
+ {"id":"drilgann","ver":"1.4.0","part":8,"loc":"Snowbank Town","text":"Mega Drilgann's ability is now correctly <b>Sand Rush</b>.","status":"patch"},
+ {"id":"r10fall","ver":"1.4.0c","part":6,"loc":"Route 10","text":"The Route 10 waterfall was adjusted to prevent a softlock.","status":"patch"},
+ {"id":"buizel","ver":"1.4.0b","part":13,"text":"The Buizel in the Hidden Grotto now has Soak.","status":"patch"},
+ {"id":"prices","ver":"1.4.0c","global":true,"text":"Item prices were tweaked in 1.4.0c, so shop prices on the wiki may be out of date.","status":"patch"},
+ {"id":"dreamplant","ver":"1.4.0","part":12,"text":"Encounter rates in the Dream Nuclear Plant were adjusted; this binder has no updated rates (unverified).","status":"unverified"},
+ {"id":"r2bal","ver":"1.4.0","part":2,"loc":"Moki Town","text":"The map in your room now shows the language flag your caught Pokémon will have (useful for the Masuda Method).","status":"patch"}
+]}

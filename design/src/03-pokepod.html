@@ -1,0 +1,31 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css"><style>
+.desk{position:absolute;inset:0;background:var(--noise),linear-gradient(#202823,#121714)}
+.pod{position:absolute;left:300px;top:40px;width:840px;height:780px;border-radius:44px 44px 60px 60px;background:linear-gradient(160deg,#3b4741,#1f2622);box-shadow:0 30px 60px #000,inset 0 2px 0 rgba(255,255,255,.12),inset 0 -6px 0 rgba(0,0,0,.4);padding:30px}
+.top{display:flex;align-items:center;justify-content:space-between;font:14px var(--f-mono);color:var(--readout);padding:0 10px 14px}
+.top b{font:26px var(--f-display);color:var(--paper);letter-spacing:.06em}
+.led{width:12px;height:12px;border-radius:50%;background:var(--glow);box-shadow:var(--glow-lg);display:inline-block;margin-right:8px}
+.screen{height:560px;border-radius:16px;background:var(--screen);border:6px solid #0a0d0b;position:relative;overflow:hidden;box-shadow:inset 0 0 50px rgba(139,226,74,.2)}
+.screen::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(transparent 0 2px,rgba(0,0,0,.25) 2px 3px);pointer-events:none}
+.map{position:absolute;left:0;top:0;width:520px;bottom:0;background-image:linear-gradient(rgba(139,226,74,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(139,226,74,.08) 1px,transparent 1px);background-size:24px 24px}
+.map svg{position:absolute;inset:0}
+.lbl{position:absolute;font:13px var(--f-mono);color:var(--glow);text-shadow:var(--glow-sm);white-space:nowrap}
+.side{position:absolute;left:520px;right:0;top:0;bottom:0;border-left:2px solid rgba(139,226,74,.35);padding:16px 18px;font:14px/1.6 var(--f-mono);color:var(--readout)}
+.side h4{font:22px var(--f-display);color:var(--glow);text-shadow:var(--glow-sm);letter-spacing:.04em}
+.tabs{display:flex;gap:4px;margin:10px 0}
+.tabs span{flex:1;text-align:center;border:1px solid var(--glow);color:var(--glow);font-size:12px;padding:3px 0}
+.tabs span.on{background:var(--glow);color:var(--hazard-ink)}
+.side ul{list-style:none;padding:0}.side li{display:flex;justify-content:space-between;font-size:13px;white-space:nowrap;gap:8px;border-bottom:1px dashed rgba(183,196,185,.3);padding:3px 0}
+.ctrl{display:flex;justify-content:space-between;align-items:center;padding:28px 50px 0}
+.dpad{width:120px;height:120px;position:relative}
+.dpad i{position:absolute;background:#141815;border-radius:6px;box-shadow:inset 0 2px 0 rgba(255,255,255,.1)}
+.btns{display:flex;gap:22px}.btns i{width:58px;height:58px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#a3f06c,var(--glow-deep));box-shadow:0 4px 0 #173a0c,var(--glow-sm);font:600 18px var(--f-mono);color:var(--hazard-ink);display:grid;place-items:center;font-style:normal}
+.stripe{width:200px;height:26px;border-radius:5px}
+</style></head><body><div class="desk"></div>
+<div class="pod"><div class="top"><span><span class="led pulse"></span>LINK OK</span><b>PokéPod · TANDOR MAP</b><span>BATT ▮▮▮▯</span></div>
+<div class="screen"><div class="map"><svg viewBox="0 0 520 548"><g fill="none" stroke="#8be24a" stroke-width="3" opacity=".75"><path d="M90 470 L90 330 L220 330 L220 190 L380 190 L380 90"/><path d="M220 330 L400 330 L400 440" stroke-dasharray="6 6"/></g><g fill="#0c140e" stroke="#8be24a" stroke-width="3"><rect x="72" y="452" width="36" height="36"/><rect x="202" y="172" width="36" height="36"/><rect x="362" y="72" width="36" height="36"/><rect x="382" y="422" width="36" height="36"/></g><circle cx="220" cy="330" r="10" fill="#f2c230"><animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/></circle></svg>
+<div class="lbl" style="left:116px;top:478px">MOKI TOWN</div><div class="lbl" style="left:100px;top:380px">ROUTE 1</div><div class="lbl" style="left:246px;top:182px">NOWTOCH CITY</div><div class="lbl" style="left:300px;top:42px">BUROLE</div><div class="lbl" style="left:290px;top:466px;color:#f2c230">NUCLEAR PLANT ZETA</div><div class="lbl" style="left:12px;top:12px;color:#f2c230">LAYOUT IS SAMPLE · NOT TO SCALE</div></div>
+<div class="side"><h4>ROUTE 1</h4><div>Between Moki Town and Nowtoch City</div><div class="tabs"><span class="on">WILD</span><span>ITEMS</span><span>TRAINERS</span><span>BADGES</span></div>
+<ul><li><span>SAMPLE MON A</span><span>Lv 3–5 · 30%</span></li><li><span>SAMPLE MON B</span><span>Lv 3–5 · 25%</span></li><li><span>SAMPLE MON C</span><span>Lv 4 · 10%</span></li><li><span>Rates</span><span style="color:#f2c230">SAMPLE</span></li></ul>
+<p style="margin-top:14px;color:var(--glow)">&gt; Patched 1.4.0 — check tab badges ▮</p></div></div>
+<div class="ctrl"><div class="dpad"><i style="left:40px;top:0;width:40px;height:120px"></i><i style="left:0;top:40px;width:120px;height:40px"></i></div><div class="stripe hazard"></div><div class="btns"><i>B</i><i>A</i></div></div></div>
+<div class="footer">UNOFFICIAL FAN PROJECT</div></body></html>

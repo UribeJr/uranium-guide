@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pokémon Uranium Field Binder · Interactive Tandor guide</title>
+<meta name="description" content="An interactive field binder for Pokémon Uranium 1.4.1: the Tandor walkthrough, 8 gym files, catch, item and trainer trackers, and a patch log. Unofficial fan project.">
+<link rel="canonical" href="https://uranium-guide.vercel.app/">
+<meta name="theme-color" content="#5a3d27">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1c130c">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Pokémon Uranium Field Binder">
+<meta property="og:title" content="Pokémon Uranium Field Binder">
+<meta property="og:description" content="An interactive field binder for Pokémon Uranium 1.4.1: the Tandor walkthrough, 8 gym files, catch, item and trainer trackers, and a patch log. Unofficial fan project.">
+<meta property="og:url" content="https://uranium-guide.vercel.app/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pokémon Uranium Field Binder">
+<meta name="twitter:description" content="An interactive field binder for Pokémon Uranium 1.4.1: the Tandor walkthrough, 8 gym files, catch, item and trainer trackers, and a patch log. Unofficial fan project.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<script src="js/track.js?v=12"></script>
+<link rel="stylesheet" href="css/fonts.css?v=12">
+<link rel="stylesheet" href="css/fonts-journal.css?v=12">
+<link rel="stylesheet" href="css/fonts-binder.css?v=1">
+<link rel="stylesheet" href="css/guide.css?v=12">
+<link rel="stylesheet" href="css/journal.css?v=12">
+<link rel="stylesheet" href="css/theme-binder.css?v=1">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+ <filter id="inkstamp" x="-15%" y="-15%" width="130%" height="130%"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="3" result="n"/>
+  <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -2.4 0 0 0 1.75" result="holes"/>
+  <feComposite in="SourceGraphic" in2="holes" operator="in" result="ink"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.06" numOctaves="2" seed="8" result="w"/>
+  <feDisplacementMap in="ink" in2="w" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs></svg>
+<div class="intro is2d" id="intro" hidden>
+ <div class="flat" id="introFlat" role="button" tabindex="0" aria-label="Open the field binder">
+  <div class="band hazard top"></div><div class="band hazard bot"></div>
+  <div class="label"><small>TANDOR REGION · FILE 01</small><b>POKéMON <span>URANIUM</span><br>FIELD BINDER</b></div>
+  <div class="window">&gt; DATA: wiki sync 1.4.1<br>&gt; PRESS TO OPEN ▮</div>
+ </div>
+ <button class="skip" id="introSkip">Skip cover ▸</button><div class="skipnote">skipping remembers it · turn it back on in PokéPod ⚙</div></div>
+<div class="lamp" aria-hidden="true"></div>
+<header class="topbar">
+  <div class="brand">Pokémon Uranium<small>field binder</small></div>
+  <div class="spacer"></div>
+  <div class="pgind" id="pgind">COVER</div>
+  <label class="pbt tset" title="Night mode"><input type="checkbox" data-set="night" aria-label="Night mode"><span class="pbt-track" aria-hidden="true"><span class="pbt-knob"></span></span><span class="pbt-l">Night</span></label>
+  <div class="zoomctl" role="group" aria-label="Text size"><button id="tzDown" aria-label="Smaller text">A−</button><span id="tzVal">100%</span><button id="tzUp" aria-label="Larger text">A+</button></div>
+  <button class="gearbtn" id="gearBtn" aria-controls="gear" aria-expanded="false"><span class="dot"></span>POKéPOD</button>
+</header>
+<div class="patchbar" role="region" aria-label="Patch status"><b>PATCH 1.4.1</b><span class="pchips"><i>1.4.0 · 10/10/26</i><i>1.4.0b</i><i>1.4.0c</i></span><span class="pmsg">1.4.0c changed item prices: wiki shop prices may be stale.</span><button type="button" id="patchJump">View patch log →</button></div>
+<nav class="chips" id="chips" aria-label="Sections"></nav>
+
+<main class="stage" id="stage">
+  <div class="book" id="book"></div>
+  <div class="badgestrip" id="badgestrip"></div>
+</main>
+<div class="mbook" id="mbook"></div>
+<div id="stageSpacer" aria-hidden="true"></div>
+
+<div class="nav">
+  <button id="prev" aria-label="Previous page">◀ PREV</button>
+  <button id="next" aria-label="Next page">NEXT ▶</button>
+</div>
+
+<button class="proffab" id="profFab" aria-label="Ask Professor Bamb'o" title=""></button>
+<aside class="gear" id="gear" aria-label="PokéPod companion">
+  <div class="ghead"><div class="lens"></div><div class="leds"><i></i><i></i><i></i></div><div class="gt1">POKéPOD</div><button class="x" id="gearClose" aria-label="Close">✕</button></div>
+  <div class="screen"><div class="lcd">
+    <div class="locsel"><button data-loc="-1" aria-label="Previous location">◀</button><div class="ln" id="locName"></div><button data-loc="1" aria-label="Next location">▶</button></div>
+    <div class="locsel2"><select id="locSel" aria-label="Choose location"></select></div>
+    <div class="sync"><label class="pbt"><input type="checkbox" id="syncChk" data-set="sync"><span class="pbt-track" aria-hidden="true"><span class="pbt-knob"></span></span><span class="pbt-l">FOLLOW BOOK PAGE</span></label><span>SAVED LOCALLY</span></div>
+    <div class="gtabs"><button data-tab="wild">WILD</button><button data-tab="items">ITEMS</button><button data-tab="trainers">TRAINERS</button><button data-tab="badges">BADGES</button><button data-tab="prof" aria-label="Ask Professor Bamb'o"><span class="tabav bface" aria-hidden="true"></span>ASK</button><button data-tab="settings" aria-label="Options">OPTS</button></div>
+    <div class="gbody" id="gbody"></div>
+  </div></div>
+  <div class="gfoot"><div class="dpad" aria-hidden="true"></div><div class="pills" aria-hidden="true"><i></i><i></i></div><span class="credit2">DATA: URANIUM WIKI · CC BY-SA</span><button id="resetBtn">RESET</button><div class="abtn" aria-hidden="true"><i>B</i><i>A</i></div></div>
+</aside>
+
+<div class="lightbox" id="lightbox"><img alt="Full-size map"><p>CLICK ANYWHERE TO CLOSE · </p></div>
+
+<footer class="foot">Unofficial fan project · not affiliated with Nintendo, Game Freak, The Pokémon Company or the Pokémon Uranium team · facts from the <a href="https://pokemon-uranium.fandom.com/" target="_blank" rel="noopener">Pokémon Uranium Wiki</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>), prose rewritten</footer>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="data/config.js?v=12"></script>
+<script src="js/assets.js?v=12"></script>
+<script src="js/data.js?v=12"></script>
+<script src="js/pages.js?v=12"></script>
+<script src="js/badges.js?v=12"></script>
+<script src="js/render.js?v=12"></script>
+<script src="data/book.js?v=1"></script>
+<script src="data/p1.js?v=1"></script>
+<script src="data/p2.js?v=1"></script>
+<script src="data/p3.js?v=1"></script>
+<script src="data/p4.js?v=1"></script>
+<script src="data/p5.js?v=1"></script>
+<script src="data/p6.js?v=1"></script>
+<script src="data/p7.js?v=1"></script>
+<script src="data/p8.js?v=1"></script>
+<script src="data/p9.js?v=1"></script>
+<script src="data/p10.js?v=1"></script>
+<script src="data/p11.js?v=1"></script>
+<script src="data/p12.js?v=1"></script>
+<script src="data/p13.js?v=1"></script>
+<script src="data/sources.js?v=1"></script>
+<script src="js/professor.js?v=12"></script>
+<script src="js/app.js?v=12"></script>
+<script src="js/intro.js?v=1"></script>
+<script>document.getElementById('patchJump').addEventListener('click',function(){var G=window.__guide,p=window.BOOK.parts[13];if(G&&p)G.gotoPage(p.page);});</script>
+</body>
+</html>

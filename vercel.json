@@ -1,0 +1,25 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "",
+  "installCommand": "",
+  "outputDirectory": ".",
+  "headers": [
+    {
+      "source": "/(img|assets|vendor)/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=604800"
+        }
+      ]
+    }
+  ],
+  "functions": {
+    "api/professor.js": {
+      "maxDuration": 20,
+      "memory": 512,
+      "includeFiles": "lib/professor-index.json"
+    }
+  }
+}

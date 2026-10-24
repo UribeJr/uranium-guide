@@ -1,0 +1,51 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="base.css"><style>
+.banner{position:absolute;left:80px;right:80px;top:24px;height:64px;display:flex;align-items:center;border-radius:8px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+.banner .st{width:60px;height:100%}
+.banner .msg{flex:1;height:100%;background:var(--hazard-ink);display:flex;align-items:center;gap:18px;padding:0 22px;font:15px var(--f-mono);color:var(--paper)}
+.banner b{font:22px var(--f-display);color:var(--hazard);letter-spacing:.06em}
+.banner .chip{white-space:nowrap;border:1px solid var(--glow);color:var(--glow);padding:2px 8px;border-radius:3px}
+.banner a{white-space:nowrap;margin-left:auto;color:var(--hazard)}
+.binder{position:absolute;left:60px;right:60px;top:110px;bottom:44px;border-radius:18px;padding:22px 26px;box-shadow:0 24px 50px rgba(0,0,0,.7)}
+.pages{position:relative;display:flex;height:100%}
+.page{flex:1;background:var(--paper);background-image:var(--noise),linear-gradient(90deg,transparent 60px,rgba(168,41,31,.35) 60px 62px,transparent 62px),repeating-linear-gradient(transparent 0 31px,rgba(47,107,26,.16) 31px 32px);background-blend-mode:multiply;color:var(--ink);padding:30px 40px 30px 84px;position:relative;box-shadow:inset 0 0 40px rgba(120,100,60,.25)}
+.page.l{border-radius:6px 0 0 6px;box-shadow:inset -30px 0 30px -20px rgba(0,0,0,.35)}
+.page.r{border-radius:0 6px 6px 0;box-shadow:inset 30px 0 30px -20px rgba(0,0,0,.35)}
+.rings{position:absolute;left:50%;top:0;bottom:0;width:0;z-index:3}
+.rings i{position:absolute;left:-22px;width:44px;height:20px;border-radius:10px;background:linear-gradient(#5b635d,#e1e6e2,#5b635d);box-shadow:0 3px 4px rgba(0,0,0,.5)}
+.page small{font:13px var(--f-mono);letter-spacing:.16em;color:var(--muted)}
+.page h2{font:42px/1.05 var(--f-display);margin:6px 0 14px}
+.page h3{font:600 15px var(--f-mono);letter-spacing:.12em;color:var(--glow-deep);margin:18px 0 6px;text-transform:uppercase}
+.page p,.page li{font-size:16px;line-height:32px}
+.page ol{padding-left:22px}
+.chk{display:inline-block;width:16px;height:16px;border:2px solid var(--ink);margin-right:8px;vertical-align:-2px}
+.chk.on{background:var(--glow-deep);box-shadow:inset 0 0 0 2px var(--paper)}
+.card{background:#fffaf0;border:2px solid var(--ink);border-radius:var(--r-md);padding:14px 18px;margin-top:10px;box-shadow:4px 4px 0 var(--ink)}
+.card table{width:100%;border-collapse:collapse;font:14px/1.6 var(--f-mono)}
+.card td{border-bottom:1px dashed #b9ae8f;padding:3px 4px}
+.type{font:12px var(--f-mono);padding:1px 6px;border-radius:3px;color:#fff;background:#4a5a52}
+.type.nuc{background:var(--glow-deep);box-shadow:var(--glow-sm)}
+.note{font:24px/1.1 var(--f-hand);color:var(--alert);transform:rotate(-3deg);margin-top:14px}
+.folio{position:absolute;bottom:16px;font:13px var(--f-mono);color:var(--muted)}
+.l .folio{left:84px}.r .folio{right:40px}
+.curl{position:absolute;right:0;bottom:0;width:70px;height:70px;background:linear-gradient(135deg,transparent 50%,#cfc4a5 50%,#f6f0de 75%);border-top-left-radius:8px;box-shadow:-4px -4px 8px rgba(0,0,0,.15)}
+.zstamp{position:absolute;right:40px;top:30px;color:var(--alert);font-size:18px}
+.tabs{position:absolute;right:-24px;top:40px;display:flex;flex-direction:column;gap:6px;z-index:0}
+.tabs span{writing-mode:vertical-rl;font:13px var(--f-mono);padding:10px 4px;border-radius:0 6px 6px 0;background:var(--hazard);color:var(--hazard-ink)}
+.tabs span.on{background:var(--glow);box-shadow:var(--glow-sm)}
+</style></head><body>
+<div class="banner"><div class="st hazard"></div><div class="msg"><b>PATCH 1.4.1</b><span class="chip">1.4.0 · 10/10/26</span><span class="chip">1.4.0b</span><span class="chip">1.4.0c</span><span>1.4.0c changed item prices: wiki shop prices may be stale.</span><a>View patch log →</a></div><div class="st hazard"></div></div>
+<div class="binder vinyl"><div class="tabs"><span class="on">CH 02</span><span>GYMS</span><span>PATCH</span></div><div class="pages">
+<div class="page l"><small>CHAPTER 02 · WALKTHROUGH</small><h2>Moki Town → Nowtoch City</h2>
+<h3>Route 1</h3><ol><li><span class="chk on"></span>Leave Moki Town heading north <span class="sample">SAMPLE</span></li><li><span class="chk on"></span>Battle the route trainers <span class="sample">SAMPLE</span></li><li><span class="chk"></span>Heal up, then head for Nowtoch City <span class="sample">SAMPLE</span></li></ol>
+<h3>Wild encounters</h3><p>Species list renders here from the wiki data. <span class="sample">SAMPLE</span></p>
+<div class="note">Exp All moved to the Route 4→10 area in 1.4.0!</div>
+<div class="folio">Tandor · p. 12</div></div>
+<div class="page r"><div class="stamp zstamp">ZETA · CLEARED</div><small>GYM FILE 01</small><h2>Nowtoch Gym</h2>
+<p>Leader card <span class="sample">SAMPLE</span> — leader/gym mapping still being verified.</p>
+<div class="card"><table><tr><td>Lv 12</td><td>SAMPLE MON A</td><td><span class="type">NORMAL</span></td></tr><tr><td>Lv 13</td><td>SAMPLE MON B</td><td><span class="type">NORMAL</span></td></tr><tr><td>Lv 15</td><td>Hazma</td><td><span class="type nuc">NUCLEAR</span> <span class="sample">SAMPLE TYPE</span></td></tr></table></div>
+<h3>Reward</h3><p><span class="chk"></span>Badge &amp; TM <span class="sample">SAMPLE</span></p>
+<div class="folio">p. 13 · turn →</div><div class="curl"></div></div>
+<div class="rings"><i style="top:60px"></i><i style="top:200px"></i><i style="top:340px"></i><i style="top:480px"></i><i style="top:620px"></i></div>
+</div></div>
+<div class="footer">UNOFFICIAL FAN PROJECT</div>
+</body></html>
