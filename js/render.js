@@ -3,21 +3,31 @@
 (function(){
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const TBD='<span class="tbd">TBD</span>';
-const img=(src,cls='',alt='')=>src?`<img src="${src}" alt="${esc(alt)}" loading="lazy" decoding="async" class="${cls}">`:`<div class="noimg ${cls}">NO IMAGE</div>`;
+const img=(src,cls='',alt='')=>src?`<img src="${src}" alt="${esc(alt)}" decoding="async" class="${cls}">`:`<div class="noimg ${cls}">NO IMAGE</div>`;
 const lvTxt=lv=> lv==='scales' ? '<i>Lv. scales</i>' : lv ? `<i>Lv.${lv}</i>` : `<i>Lv.</i>${TBD}`;
 function chip(m, alt){
   return `<div class="tm">${sticker(m.n[0],'sm')}<div><b>${esc(m.n.join(' / '))}</b>${m.x&&m.x.length?`<small>${esc(m.x.join(' · '))}</small>`:''}${lvTxt(m.lv)}</div></div>`;
 }
 
-/* Pokémon "stickers": clean type-coloured name chips (wiki sprite licence is unclear, so no wiki images). */
+/* Pokémon sprites (img/mon, from the wiki) with a type-coloured chip as fallback. */
 const DEXK={}; (window.DEX||[]).forEach(d=>{DEXK[d.key]=d;});
 const mkey=n=>String(n||'').toLowerCase().replace(/^mega /,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 const tcol=t=>(window.TYPE_COLORS||{})[t]||'#7b857e';
-function sticker(name,sz){
+function chipSticker(name,sz){
   let d=DEXK[mkey(name)], t=d?d.t:[];
   if(!d&&/^Nuclear /i.test(name||'')){ d=DEXK[mkey(name.slice(8))]; t=['Nuclear']; } const a=tcol(t[0]), b=tcol(t[1]||t[0]);
   const ini=String(name||'?').replace(/^(Mega|Nuclear) /,'').slice(0,2);
   return `<span class="mst${sz?' '+sz:''}" style="--a:${a};--b:${b}" title="${esc((d?'#'+d.n+' ':'')+name+(t.length?' · '+t.join('/'):''))}" aria-hidden="true"><b>${esc(ini)}</b>${d?`<i>${d.n}</i>`:''}</span>`;
+}
+function sticker(name,sz){
+  let d=DEXK[mkey(name)], nuc=false;
+  if(!d&&/^Nuclear /i.test(name||'')){ d=DEXK[mkey(name.slice(8))]; nuc=true; }
+  const sp=d&&window.SPR&&SPR[d.n]; const big=(sz==='lg'||sz==='dex');
+  const f=sp&&(big?(sp.big||sp.icon):sp.icon);
+  if(!f) return chipSticker(name,sz);
+  const sc=big? (f===sp.big?1:2) : (sz==='sm'||sz==='pod'||sz==='xs'?1:2);
+  const w=f.w*sc, h=f.h*sc;
+  return `<span class="msp ${sz||'md'}${nuc?' nuc':''}" title="${esc('#'+d.n+' '+name)}"><img src="${f.f}" width="${w}" height="${h}" alt="" decoding="async" onerror="this.parentNode.classList.add('broken')">${chipSticker(name,sz)}${nuc?'<em class="nb">☢</em>':''}</span>`;
 }
 const monPic=(m,name,sz)=>sticker(name,sz);
 window.sticker=sticker; window.DEXK=DEXK; window.mkey=mkey;
@@ -120,13 +130,13 @@ R.dexEntry=function(d){
   const evo=d.evo&&d.evo.length>1?d.evo.filter(e=>!e.mega).map((e,i,a)=>`${e.name===d.name?`<b>${esc(e.name)}</b>`:esc(e.name)}${i<a.length-1&&e.how?` <span class="how">→ ${esc(e.how.replace(/^Rare Candy\s*/,''))} →</span> `:i<a.length-1?' → ':''}`).join(''):'';
   const megas=d.evo?d.evo.filter(e=>e.mega).map(e=>e.name):[];
   const wh=d.where&&d.where.length?d.where.slice(0,6).map(w=>{const pg=L[w.loc];return pg!=null?`<button class="dloc" data-goto="${pg}" title="${esc(w.labels.join(', '))}">${esc(w.name)}<b>p.${pg}</b></button>`:`<span class="dloc">${esc(w.name)}</span>`}).join('')+(d.where.length>6?`<span class="dmore">+${d.where.length-6} more</span>`:''):`<span class="dav">${esc(d.avail||'Not listed in this binder; see the wiki page.')}</span>`;
-  return `<div class="dx" id="dex-${d.key}">${sticker(d.name)}<div class="dxb"><div class="dxh"><i>#${d.n}</i><b>${esc(d.name)}</b>${d.t.map(x=>`<span class="ty" style="background:${tcol(x)}">${esc(x)}</span>`).join('')}<button class="ball sm" data-caught="${d.key}" title="Caught?"></button></div>
+  return `<div class="dx" id="dex-${d.key}">${sticker(d.name,'dex')}<div class="dxb"><div class="dxh"><i>#${d.n}</i><b>${esc(d.name)}</b>${d.t.map(x=>`<span class="ty" style="background:${tcol(x)}">${esc(x)}</span>`).join('')}<button class="ball sm" data-caught="${d.key}" title="Caught?"></button></div>
    ${evo?`<div class="dev">${evo}${megas.length?` <span class="how">· Mega: ${esc(megas.join(', '))}</span>`:''}</div>`:megas.length?`<div class="dev"><span class="how">Mega: ${esc(megas.join(', '))}</span></div>`:''}
    <div class="dwh">${wh}</div>${d.patch?`<div class="dpatch">Patch ${esc(d.patch.text)} <a class="cite" href="${d.patch.src}" target="_blank" rel="noopener">[patch notes]</a></div>`:''}</div></div>`;
 };
 R.dexPage=function(desc,pageNo){
   const D=window.DEX||[], list=D.slice(desc.a,desc.b);
-  const head=desc.open?`<div class="phead opener"><div class="kicker">Appendix · Tandor Pokédex</div><h2>Pokédex</h2><div class="num">${D.length}</div></div><p class="credit dxintro">All ${D.length} Tandor entries in wiki dex order: number, type, evolution line and where this binder lists it (tap a location to jump). Data: <a href="https://pokemon-uranium.fandom.com/wiki/Pok%C3%A9dex" target="_blank" rel="noopener">pokemon-uranium.fandom.com/wiki/Pokédex</a> · CC BY-SA 3.0. Stickers are type-coloured chips, not game sprites.</p>`
+  const head=desc.open?`<div class="phead opener"><div class="kicker">Appendix · Tandor Pokédex</div><h2>Pokédex</h2><div class="num">${D.length}</div></div><p class="credit dxintro">All ${D.length} Tandor entries in wiki dex order: number, type, evolution line and where this binder lists it (tap a location to jump). Data: <a href="https://pokemon-uranium.fandom.com/wiki/Pok%C3%A9dex" target="_blank" rel="noopener">pokemon-uranium.fandom.com/wiki/Pokédex</a> · CC BY-SA 3.0. Sprites: Pokémon Uranium team (JV &amp; Involuntary Twitch), via the wiki.</p>`
     :`<div class="rhead"><span class="rp">POKéDEX</span><span class="rt">#${list[0]?list[0].n:''} – #${list.length?list[list.length-1].n:''}</span></div>`;
   return `<div class="pin-in gen dexpg">${head}<div class="flow">${list.map(R.dexEntry).join('')}</div>${R.folio(pageNo,'POKéDEX')}</div>`;
 };

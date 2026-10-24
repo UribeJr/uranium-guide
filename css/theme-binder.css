@@ -168,3 +168,20 @@ span.dloc{cursor:default}
 #ctabs .ctab{height:58px}
 /* WebKit: composited pages can ignore backface-visibility; hide the far face of settled leaves explicitly */
 .leaf:not(.anim):not(.flipped) > .face.back,.leaf.flipped:not(.anim) > .face.front{visibility:hidden}
+
+/* Pokémon sprites (Pokémon Uranium team, via the wiki), crisp integer scales */
+.msp{position:relative;flex:none;display:inline-grid;place-items:center;vertical-align:middle;line-height:0}
+.msp img{image-rendering:pixelated;image-rendering:crisp-edges;display:block}
+.msp:not(.broken)>.mst{display:none}
+.msp.broken>img{display:none}
+.msp.sm,.msp.pod,.msp.xs{width:32px;height:32px}
+.msp.md{width:64px;height:64px}
+.msp.lg,.msp.dex{width:80px;height:80px}
+.msp.dex{margin:-8px -4px -6px -8px}
+.msp.lg{margin:-6px 0 -6px -6px}
+.msp.pod{margin-right:8px;filter:drop-shadow(0 0 2px rgba(120,255,140,.35))}
+.msp.xs{margin-right:4px}
+.msp .nb{position:absolute;right:-2px;bottom:-2px;font:700 10px/14px var(--f-mono);font-style:normal;width:15px;height:15px;text-align:center;border-radius:50%;background:#1f2421;color:#b6ff3b;box-shadow:0 0 0 1.5px #b6ff3b}
+.msp.md .nb,.msp.lg .nb,.msp.dex .nb{width:18px;height:18px;font-size:12px;line-height:18px}
+.wcard .msp{margin:0 auto}
+.tm .msp{margin-right:4px}
