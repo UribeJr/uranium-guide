@@ -18,7 +18,7 @@ const pageOfAnchor=a=>{ const m=/^p(\d+)u(\d+)$/.exec(a||''); if(!m) return -1; 
 (window.STARTERS||[]).forEach(s=>{ const p=pageOfAnchor(s.a); if(p>=0) s.page=p; });
 if((S.bv||10)!==B.ver){ let p=S.anchor?pageOfAnchor(S.anchor):-1; const rm=B.remap&&B.remap[String(S.bv||10)];
   if(p<0&&rm&&S.page!=null) p=rm[S.page]; if(p>=0) S.page=p; S.bv=B.ver; }
-const CH=B.chapters.map((c,k)=>Object.assign({},c,{page:k===0?2:c.page, short:['MOKI','BUROLE','BEALBEACH','VINOVILLE','AMATREE','VENESI','SNOWBANK','TSUKINAMI','LEAGUE','POSTGAME'][k]||c.name}));
+const CH=B.chapters.map((c,k)=>Object.assign({},c,{page:k===0?2:c.page, short:['MOKI','BUROLE','BEALBEACH','VINOVILLE','AMATREE','VENESI','SNOWBANK','TSUKINAMI','LEAGUE','POSTGAME','POKéDEX'][k]||c.name}));
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let mobile=null, spread=0, mp=0, busy=false;
 const G=window.gsap||null; if(G&&window.DrawSVGPlugin) G.registerPlugin(DrawSVGPlugin);
@@ -94,16 +94,20 @@ function syncLoc(id){
   return id;
 }
 
+/* location id -> first binder page that covers it (for Pokédex links) */
+window.LOCPAGE=(()=>{const m={}; BP.forEach((d,i)=>{ if(d.t==='f'&&d.loc&&m[d.loc]==null) m[d.loc]=i; }); B.locs.forEach(l=>{ if(m[l.id]==null){ const pt=B.parts[l.part]; if(pt) m[l.id]=pt.page; } }); return m;})();
+const teamHTML=t=>String(t||'').split(/\s*[,;]\s*/).filter(Boolean).map(x=>{const m=x.match(/^(.*?)\s+(?:Lv\.?\s*)?(\d+)$/); const nm=m?m[1]:x; return `<span class="ptm">${window.sticker?sticker(nm,'xs'):''}${esc(nm)}${m?` <i>${m[2]}</i>`:''}</span>`}).join('');
 /* ---------- page rendering ---------- */
 const secOfHand=i=>SECTIONS.find(s=>s.id===PAGES[i].sec);
 function endPage(i){
   const src=(window.SOURCES||[]);
   return `<div class="pin-in gen endpg"><div class="phead"><div class="kicker">End of file</div><h2>Credits</h2></div>
-  <p>That's all 12 walkthrough sections from the Pokémon Uranium wiki, rewritten in our own words, plus the eight Tandor gym files and a postgame chapter built from the 2026 patch notes.</p>
+  <p>That's all 12 walkthrough sections from the Pokémon Uranium wiki, rewritten in our own words, plus the eight Tandor gym files, a postgame chapter built from the 2026 patch notes and a ${(window.DEX||[]).length}-entry Pokédex.</p>
   <div class="box"><b>Your file:</b><div id="wrapStats" style="font-family:var(--f-mono,monospace);font-size:11px;line-height:1.8;margin-top:6px"></div></div>
   <h3 class="bar">Sources &amp; licence</h3>
   <p class="credit">Facts (wild Pokémon, levels, rates, items, trainers, gym teams, rewards and patch changes) come from the <a href="https://pokemon-uranium.fandom.com/" target="_blank" rel="noopener">Pokémon Uranium Wiki</a> on Fandom, used under <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a>. Walkthrough prose is our own rewrite; no wiki text or images are reproduced. ${src.length} source pages (revision ids are listed on each section and in the build's stale report).</p>
   <p class="credit">Professor Bamb'o sprite: fan pixel art supplied for this project. Badge icons are placeholder art, not the official designs.</p>
+  <p class="credit">Pokédex: numbers, types and evolutions from the wiki's <a href="https://pokemon-uranium.fandom.com/wiki/Pok%C3%A9dex" target="_blank" rel="noopener">Pokédex</a> and species pages (CC BY-SA 3.0), with 2026 patch-note changes applied. Pokémon stickers are type-coloured name badges drawn by this binder: the wiki's sprite files carry no licence, so none are reused.</p>
   <p class="disc">Unofficial fan project. Not affiliated with Nintendo, Game Freak, The Pokémon Company or the Pokémon Uranium developers. Pokémon © Nintendo / Game Freak / Creatures.</p>
   ${R.folio(i,'END OF FILE')}</div>`;
 }
@@ -118,6 +122,7 @@ function pageInfo(i){
     case 'note': return {html:R.notePage(PD[d.p],ch,i),color:ch.color};
     case 'gl': { const g=B.gyms[d.g]; return {html:R.gymLeft(g,ch,i),color:ch.color,cls:'gympg'}; }
     case 'gr': { const g=B.gyms[d.g]; return {html:R.gymRight(g,ch,i,S.diff[g.no]||(g.teams[0]&&g.teams[0].diff)),color:ch.color,cls:'gympg'}; }
+    case 'dex': return {html:R.dexPage(d,i),color:ch.color,cls:'dexp'};
     case 'end': return {html:endPage(i),color:ch.color};
   }
   return {html:'',color:'#1b2a4a'};
@@ -159,7 +164,7 @@ function prune(){
 function buildDesktop(){
   const book=$('#book');
   book.innerHTML='<div class="endpaper left"><div class="found">If found, please return to<br>the nearest Pokémon Center.<br><br>Trainer: ______________</div><div class="peek"><i>Gym 1 · Maria</i><i>bring a Fighting-type!</i></div><div class="pocket"><em>stickers &amp; stamps</em></div></div><div class="endpaper right"><span>THE END<br>THANKS FOR<br>READING</span></div><div class="edgeL"></div><div class="edgeR"></div><div class="spiral"></div><div class="ctabs" id="ctabs"></div>';
-  $('#ctabs').innerHTML=CH.map((c,k)=>`<button class="ctab r" data-ch="${k}" style="--tc:${c.color};top:${34+k*72}px" title="${esc(c.name)}"><span>${esc(c.short)}</span></button>`).join('');
+  $('#ctabs').innerHTML=CH.map((c,k)=>`<button class="ctab r" data-ch="${k}" style="--tc:${c.color};top:${24+k*62}px" title="${esc(c.name)}"><span>${esc(c.short)}</span></button>`).join('');
   ensureLeaves(spread-WIN_BACK,spread+WIN_FWD,spread);
   afterNav(); requestAnimationFrame(annotateVisible);
 }
@@ -288,7 +293,7 @@ function renderGear(){
       const seen={}, list=loc.wild.filter(w=>{const k=w.key+'|'+w.label; if(seen[k]) return false; return seen[k]=true;});
       const keys=[...new Set(list.map(w=>w.key))];
       h+=prog(keys.filter(k=>S.caught[k]).length,keys.length,'CAUGHT');
-      h+= list.length? list.map(w=>{const c=!!S.caught[w.key];return `<div class="grow2 ${c?'done':''}">${w.img?`<img class="sp" src="${w.img}" alt="" loading="lazy">`:''}<div class="gi"><b>${esc(w.name.toUpperCase())}</b>${esc(w.label||'Wild')}${w.x?' · '+esc(w.x):''}<small>Rate ${w.rate?esc(String(w.rate)):'<span class="tbd">TBD</span>'} · Lv. ${w.lv?esc(String(w.lv)):'<span class="tbd">TBD</span>'}</small></div><button class="chk" data-caught="${w.key}" aria-label="caught">${c?'✓':''}</button></div>`}).join('')
+      h+= list.length? list.map(w=>{const c=!!S.caught[w.key];return `<div class="grow2 ${c?'done':''}">${window.sticker?sticker(w.name,'pod'):''}<div class="gi"><b>${esc(w.name.toUpperCase())}</b>${esc(w.label||'Wild')}${w.x?' · '+esc(w.x):''}<small>Rate ${w.rate?esc(String(w.rate)):'<span class="tbd">TBD</span>'} · Lv. ${w.lv?esc(String(w.lv)):'<span class="tbd">TBD</span>'}</small></div><button class="chk" data-caught="${w.key}" aria-label="caught">${c?'✓':''}</button></div>`}).join('')
         : `<div class="empty">NO WILD POKéMON<br>LISTED FOR THIS SECTION</div>`;
     }
   } else if(S.tab==='items'){
@@ -298,7 +303,7 @@ function renderGear(){
   } else if(S.tab==='trainers'){
     h+=prog(loc.trainers.filter(t=>S.trainers[t.id]).length,loc.trainers.length,'DEFEATED');
     h+= loc.trainers.length? loc.trainers.map(t=>{const c=!!S.trainers[t.id];
-        const team= loc.p1? t.team.map(m=>MON[m.mon].name+' Lv.'+m.lv).join(t.team[0].alt?' / ':', ') : esc(t.team);
+        const team= loc.p1? t.team.map(m=>MON[m.mon].name+' Lv.'+m.lv).join(t.team[0].alt?' / ':', ') : `<span class="pteam">${teamHTML(t.team)}</span>`;
         const small= loc.p1? `<small>Prize: ${t.reward} · ${t.note}</small>` : `<small>Prize: ${t.prize?esc(t.prize):'<span class="tbd">TBD</span>'}</small>`;
         return `<div class="grow2 ${c?'done':''}"><div class="gi"><b>${esc(t.name.toUpperCase())}</b>${team}${small}</div><button class="chk" data-trainer="${t.id}">${c?'✓':''}</button></div>`}).join('')
       : `<div class="empty">NO TRAINERS LISTED<br>FOR THIS SECTION</div>`;

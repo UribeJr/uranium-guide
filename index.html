@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="css/fonts-binder.css?v=1">
 <link rel="stylesheet" href="css/guide.css?v=12">
 <link rel="stylesheet" href="css/journal.css?v=12">
-<link rel="stylesheet" href="css/theme-binder.css?v=1">
+<link rel="stylesheet" href="css/theme-binder.css?v=3">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -64,8 +64,8 @@
 <div id="stageSpacer" aria-hidden="true"></div>
 
 <div class="nav">
-  <button id="prev" aria-label="Previous page">◀ PREV</button>
-  <button id="next" aria-label="Next page">NEXT ▶</button>
+  <button id="prev" aria-label="Previous page"><span class="ar"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M12.5 4.5 7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Prev</span></button>
+  <button id="next" aria-label="Next page"><span>Next</span><span class="ar"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7.5 4.5 13 10l-5.5 5.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button>
 </div>
 
 <button class="proffab" id="profFab" aria-label="Ask Professor Bamb'o" title=""></button>
@@ -91,8 +91,9 @@
 <script src="js/data.js?v=12"></script>
 <script src="js/pages.js?v=12"></script>
 <script src="js/badges.js?v=12"></script>
-<script src="js/render.js?v=12"></script>
-<script src="data/book.js?v=1"></script>
+<script src="data/dex.js?v=3"></script>
+<script src="js/render.js?v=13"></script>
+<script src="data/book.js?v=2"></script>
 <script src="data/p1.js?v=1"></script>
 <script src="data/p2.js?v=1"></script>
 <script src="data/p3.js?v=1"></script>
@@ -108,7 +109,7 @@
 <script src="data/p13.js?v=1"></script>
 <script src="data/sources.js?v=1"></script>
 <script src="js/professor.js?v=12"></script>
-<script src="js/app.js?v=12"></script>
+<script src="js/app.js?v=13"></script>
 <script src="js/intro.js?v=1"></script>
 <script>document.getElementById('patchJump').addEventListener('click',function(){var G=window.__guide,p=window.BOOK.parts[13];if(G&&p)G.gotoPage(p.page);});</script>
 </body>

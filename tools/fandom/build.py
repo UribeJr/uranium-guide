@@ -222,16 +222,17 @@ CHS=[('Moki Town',[1,2],'#2f6b1a',0),('Burole',[3],'#7a5a2b',1),('Bealbeach',[4]
 G=gyms(TYPES)
 book=dict(chapters=[dict(name=a,parts=b,color=c,gym=d,page=0) for a,b,c,d in CHS],
   parts={str(n):dict(n=n,title=PD[n]['title'],page=0) for n in PD},pages=[{'t':'h','i':0,'c':0},{'t':'toc','c':0},{'t':'h','i':1,'c':0}],gyms=G,locs=locs,ver=1,remap={},patch="1.4.1")
-os.makedirs(APP+'/data',exist_ok=True)
-open(APP+'/data/book.js','w').write('window.BOOK='+json.dumps(book,ensure_ascii=False,separators=(',',':'))+';')
-for n,p in PD.items(): open(APP+f'/data/p{n}.js','w').write(f'(window.PD=window.PD||{{}})[{n}]='+json.dumps(p,ensure_ascii=False,separators=(',',':'))+';')
-open(APP+'/data/config.js','w').write('window.LITE=false;\n')
-srcs={s['title']:s for s in sources}
-open(APP+'/data/sources.js','w').write('window.SOURCES='+json.dumps(list(srcs.values()),ensure_ascii=False)+';')
-with open(H+'/stale_report.md','w') as f:
-  f.write(f"# Stale report (generated {datetime.datetime.now():%Y-%m-%d %H:%M} America/Chicago)\nPages last edited before {STALE_CUT} (1.4.0 release) may not reflect the 2026 update.\n\n| Page | Last edit (UTC) |\n|---|---|\n")
-  for t,ts in sorted(set(stale)): f.write(f"| [{t}]({url(t)}) | {ts} |\n")
-  f.write(f"\nPatch overrides applied ({len(applied)}): {', '.join(applied)}\n")
-print('parts',len(PD),'locs',len(locs),'wild',sum(len(l['wild']) for l in locs),'items',sum(len(l['items']) for l in locs),'trainers',sum(len(l['trainers']) for l in locs))
-for g in G: print(g['no'],g['leader'],g['badgeName'],[ (t['diff'],len(t['mons']),[m['lv'] for m in t['mons']]) for t in g['teams']],g['prize'])
-print('stale',len(set(stale)))
+if __name__=='__main__':
+  os.makedirs(APP+'/data',exist_ok=True)
+  open(APP+'/data/book.js','w').write('window.BOOK='+json.dumps(book,ensure_ascii=False,separators=(',',':'))+';')
+  for n,p in PD.items(): open(APP+f'/data/p{n}.js','w').write(f'(window.PD=window.PD||{{}})[{n}]='+json.dumps(p,ensure_ascii=False,separators=(',',':'))+';')
+  open(APP+'/data/config.js','w').write('window.LITE=false;\n')
+  srcs={s['title']:s for s in sources}
+  open(APP+'/data/sources.js','w').write('window.SOURCES='+json.dumps(list(srcs.values()),ensure_ascii=False)+';')
+  with open(H+'/stale_report.md','w') as f:
+    f.write(f"# Stale report (generated {datetime.datetime.now():%Y-%m-%d %H:%M} America/Chicago)\nPages last edited before {STALE_CUT} (1.4.0 release) may not reflect the 2026 update.\n\n| Page | Last edit (UTC) |\n|---|---|\n")
+    for t,ts in sorted(set(stale)): f.write(f"| [{t}]({url(t)}) | {ts} |\n")
+    f.write(f"\nPatch overrides applied ({len(applied)}): {', '.join(applied)}\n")
+  print('parts',len(PD),'locs',len(locs),'wild',sum(len(l['wild']) for l in locs),'items',sum(len(l['items']) for l in locs),'trainers',sum(len(l['trainers']) for l in locs))
+  for g in G: print(g['no'],g['leader'],g['badgeName'],[ (t['diff'],len(t['mons']),[m['lv'] for m in t['mons']]) for t in g['teams']],g['prize'])
+  print('stale',len(set(stale)))

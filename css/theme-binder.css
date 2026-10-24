@@ -33,8 +33,8 @@ body.night{background:linear-gradient(160deg,#101311,#0a0c0b)}
 .patchbar button{background:none;border:0;color:var(--glow);font:inherit;cursor:pointer;text-decoration:underline;padding:4px 0}
 /* chips */
 .chips button,.chips a{font-family:var(--f-mono)!important}
-/* paper pages: ruled lines + red margin */
-.page{background-color:var(--paper)!important;background-image:linear-gradient(90deg,transparent 59px,rgba(168,41,31,.45) 59px,rgba(168,41,31,.45) 61px,transparent 61px),
+/* paper pages: ruled lines only (red margin rules removed per owner feedback) */
+.page{background-color:var(--paper)!important;background-image:
   repeating-linear-gradient(180deg,transparent 0 31px,rgba(47,107,26,.16) 31px 32px)!important;color:var(--ink);font-family:var(--f-body)}
 .kicker{font-family:var(--f-mono)!important;font-size:12px!important;letter-spacing:2px!important;text-transform:uppercase!important;color:var(--glow-deep)!important}
 .phead h2,.page h2{font-family:var(--f-stencil)!important;font-weight:400!important;letter-spacing:.5px;color:var(--ink);text-shadow:none!important}
@@ -110,3 +110,61 @@ body.night{background:linear-gradient(160deg,#101311,#0a0c0b)}
 .intro .flat{aspect-ratio:auto!important}
 .topbar .brand{background:none!important;transform:none!important;box-shadow:none!important}
 .topbar .brand::before,.topbar .brand::after{display:none!important}
+
+/* no vertical margin rules on paper */
+.pin-in::before,.page .pin-in::before,.mpage .pin-in::before{display:none!important;content:none!important}
+/* page-turn buttons: binder tabs with crisp SVG chevrons */
+.nav{gap:12px;bottom:max(12px,env(safe-area-inset-bottom))}
+.nav button{display:inline-flex;align-items:center;gap:8px;height:44px;min-width:112px;justify-content:center;padding:0 16px!important;
+  font:400 15px/1 var(--f-stencil)!important;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink)!important;background:var(--paper)!important;
+  border:2px solid var(--hazard-ink)!important;border-radius:10px!important;clip-path:none!important;
+  box-shadow:0 3px 0 var(--hazard-ink),0 6px 14px rgba(0,0,0,.35)!important;cursor:pointer;transition:transform .12s,box-shadow .12s,background .12s;-webkit-tap-highlight-color:transparent}
+.nav button svg{width:20px;height:20px;flex:none;display:block}
+.nav button .ar{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--vinyl);color:var(--glow)}
+.nav button:hover:not(:disabled){background:#f4eedd!important}
+.nav button:hover:not(:disabled) .ar{box-shadow:var(--glow-sm,0 0 6px rgba(139,226,74,.7))}
+.nav button:active:not(:disabled){transform:translateY(3px);box-shadow:0 0 0 var(--hazard-ink),0 2px 6px rgba(0,0,0,.3)!important}
+.nav button:focus-visible{outline:3px solid var(--glow);outline-offset:2px}
+.nav button:disabled{opacity:.45;cursor:default}
+body.mobile .nav{bottom:max(8px,env(safe-area-inset-bottom));gap:10px}
+body.mobile .nav button{height:42px;min-width:104px;font-size:14px!important}
+body.mobile .mbook{bottom:calc(64px + env(safe-area-inset-bottom))!important}
+
+/* Pokémon stickers (type-coloured die-cut chips) */
+.mst{--s:42px;position:relative;flex:none;display:inline-grid;place-items:center;width:var(--s);height:var(--s);border-radius:50%;
+  background:linear-gradient(135deg,var(--a) 0 50%,var(--b) 50% 100%);border:3px solid #fff;box-shadow:0 0 0 1.5px rgba(31,36,33,.55),0 2px 3px rgba(0,0,0,.28);
+  color:#fff;font:400 calc(var(--s)*.38)/1 var(--f-stencil);text-shadow:0 1px 0 rgba(0,0,0,.55),0 0 3px rgba(0,0,0,.4);transform:rotate(-4deg);vertical-align:middle}
+.mst b{font-weight:400;letter-spacing:.5px}
+.mst i{position:absolute;bottom:-5px;right:-8px;font:600 9px/1 var(--f-mono);font-style:normal;background:var(--vinyl);color:var(--glow);padding:2px 3px;border-radius:3px;text-shadow:none;transform:rotate(4deg)}
+.mst.sm{--s:30px;border-width:2px}.mst.sm i{display:none}
+.mst.xs{--s:20px;border-width:1.5px;transform:none;margin-right:4px}.mst.xs i{display:none}
+.mst.lg{--s:52px}
+.mst.pod{--s:34px;border-color:#0c140e;box-shadow:0 0 0 1.5px var(--glow-deep);margin-right:8px}.mst.pod i{display:none}
+.wcard .mst{margin:2px auto 4px}
+.gmon .mst{margin-right:8px}
+.tm .mst{margin-right:6px}
+.pteam{display:flex;flex-wrap:wrap;gap:3px 10px;margin:2px 0}
+.ptm{display:inline-flex;align-items:center;white-space:nowrap}.ptm i{font-style:normal;opacity:.75;margin-left:3px}
+/* Pokédex pages */
+.dexpg .dxintro{margin:0 0 6px;font-size:11px}
+.dx{display:flex;gap:10px;align-items:flex-start;padding:5px 0 6px;border-bottom:1px dashed rgba(31,36,33,.28);break-inside:avoid}
+.dx .mst{margin-top:2px}
+.dxb{flex:1;min-width:0}
+.dxh{display:flex;align-items:center;flex-wrap:wrap;gap:4px 6px;font-size:14px}
+.dxh i{font:600 12px var(--f-mono);font-style:normal;color:var(--muted)}
+.dxh b{font-family:var(--f-stencil);font-weight:400;font-size:16px;letter-spacing:.3px}
+.dxh .ty{font:600 10px/1 var(--f-mono);color:#fff;padding:3px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:.5px}
+.dxh .ball{margin-left:auto}
+.dev{font-size:11.5px;line-height:1.35;color:var(--ink);margin-top:2px;overflow-wrap:anywhere}
+.dev .how{color:var(--muted);font-size:10.5px}
+.dwh{display:flex;flex-wrap:wrap;gap:3px 4px;margin-top:3px}
+.dloc{font:11px/1.2 var(--f-mono);background:rgba(47,107,26,.1);border:1px solid rgba(47,107,26,.45);color:var(--glow-deep);border-radius:4px;padding:2px 5px;cursor:pointer;max-width:100%;overflow-wrap:anywhere;text-align:left}
+span.dloc{cursor:default}
+.dloc b{font-weight:600;margin-left:4px;color:var(--ink)}
+.dloc:hover{background:rgba(47,107,26,.2)}
+.dav{font-size:11px;color:var(--muted);line-height:1.35;overflow-wrap:anywhere}
+.dmore{font:11px var(--f-mono);color:var(--muted);align-self:center}
+.dpatch{font-size:11px;margin-top:3px;border-left:3px solid var(--hazard);padding-left:6px}
+#ctabs .ctab{height:58px}
+/* WebKit: composited pages can ignore backface-visibility; hide the far face of settled leaves explicitly */
+.leaf:not(.anim):not(.flipped) > .face.back,.leaf.flipped:not(.anim) > .face.front{visibility:hidden}

@@ -6,8 +6,21 @@ const TBD='<span class="tbd">TBD</span>';
 const img=(src,cls='',alt='')=>src?`<img src="${src}" alt="${esc(alt)}" loading="lazy" decoding="async" class="${cls}">`:`<div class="noimg ${cls}">NO IMAGE</div>`;
 const lvTxt=lv=> lv==='scales' ? '<i>Lv. scales</i>' : lv ? `<i>Lv.${lv}</i>` : `<i>Lv.</i>${TBD}`;
 function chip(m, alt){
-  return `<div class="tm">${m.img&&m.img[0]?img(m.img[0]):''}<div><b>${esc(m.n.join(' / '))}</b>${m.x&&m.x.length?`<small>${esc(m.x.join(' · '))}</small>`:''}${lvTxt(m.lv)}</div></div>`;
+  return `<div class="tm">${sticker(m.n[0],'sm')}<div><b>${esc(m.n.join(' / '))}</b>${m.x&&m.x.length?`<small>${esc(m.x.join(' · '))}</small>`:''}${lvTxt(m.lv)}</div></div>`;
 }
+
+/* Pokémon "stickers": clean type-coloured name chips (wiki sprite licence is unclear, so no wiki images). */
+const DEXK={}; (window.DEX||[]).forEach(d=>{DEXK[d.key]=d;});
+const mkey=n=>String(n||'').toLowerCase().replace(/^mega /,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const tcol=t=>(window.TYPE_COLORS||{})[t]||'#7b857e';
+function sticker(name,sz){
+  let d=DEXK[mkey(name)], t=d?d.t:[];
+  if(!d&&/^Nuclear /i.test(name||'')){ d=DEXK[mkey(name.slice(8))]; t=['Nuclear']; } const a=tcol(t[0]), b=tcol(t[1]||t[0]);
+  const ini=String(name||'?').replace(/^(Mega|Nuclear) /,'').slice(0,2);
+  return `<span class="mst${sz?' '+sz:''}" style="--a:${a};--b:${b}" title="${esc((d?'#'+d.n+' ':'')+name+(t.length?' · '+t.join('/'):''))}" aria-hidden="true"><b>${esc(ini)}</b>${d?`<i>${d.n}</i>`:''}</span>`;
+}
+const monPic=(m,name,sz)=>sticker(name,sz);
+window.sticker=sticker; window.DEXK=DEXK; window.mkey=mkey;
 const R={};
 R.unit=function(u,part){
   switch(u.k){
@@ -29,9 +42,9 @@ R.unit=function(u,part){
   }
   case 'legend': return `<div class="u u-leg box">${legend(u)}</div>`;
   case 'items': return `<div class="u u-items"><div class="u-hd">${esc(u.title)}</div><div class="igrid">${u.rows.map(r=>`<button class="icard" data-item="${r.id}" title="Mark as found">${r.img?img(r.img):''}<span class="nm">${r.name}${r.sub?`<small>${esc(r.sub)}</small>`:''}</span><span class="got"></span></button>`).join('')}</div></div>`;
-  case 'wild': return `<div class="u u-wild"><div class="u-hd">${esc(u.title)}${u.label?` · <span>${esc(u.label)}</span>`:''}${u.mons.every(m=>m.lv)?`<em>Lv. · Rate</em>`:`<em>Rate / Lv. ${TBD}</em>`}</div><div class="wgrid">${u.mons.map(m=>`<div class="wcard"${m.src?` title="Lv./rate: ${esc(m.src.from)} – ${esc(m.src.page)}"`:''}>${m.img[0]?img(m.img[0]):''}<b>${esc(m.n.join(' / '))}</b>${m.x.length?`<small>${esc(m.x.join(' · '))}</small>`:''}${m.lv?`<small class="wlv">Lv. ${esc(String(m.lv))}${m.rate?` · ${esc(String(m.rate))}`:''}</small>`:''}<button class="ball" data-caught="${m.key}" title="Caught?"></button></div>`).join('')}</div></div>`;
+  case 'wild': return `<div class="u u-wild"><div class="u-hd">${esc(u.title)}${u.label?` · <span>${esc(u.label)}</span>`:''}${u.mons.every(m=>m.lv)?`<em>Lv. · Rate</em>`:`<em>Rate / Lv. ${TBD}</em>`}</div><div class="wgrid">${u.mons.map(m=>`<div class="wcard"${m.src?` title="Lv./rate: ${esc(m.src.from)} – ${esc(m.src.page)}"`:''}>${sticker(m.n[0])}<b>${esc(m.n.join(' / '))}</b>${m.x.length?`<small>${esc(m.x.join(' · '))}</small>`:''}${m.lv?`<small class="wlv">Lv. ${esc(String(m.lv))}${m.rate?` · ${esc(String(m.rate))}`:''}</small>`:''}<button class="ball" data-caught="${m.key}" title="Caught?"></button></div>`).join('')}</div></div>`;
   case 'trainer': return `<div class="u"><div class="tcard ${u.portrait?'':'np'}">${u.portrait?`<div class="por">${img(u.portrait,'',u.name)}</div>`:''}<div class="tb"><div class="tn"><span>${esc(u.name)}</span><button class="tdone" data-trainer="${u.id}" title="Mark defeated">WIN?</button></div>${u.notes.length?`<div class="tnote">${esc(u.notes.join(' · '))}</div>`:''}${u.prize?`<div class="tnote" title="${u.src?esc('Prize: '+u.src.from+' – '+u.src.page):''}">Prize: ${esc(u.prize)}</div>`:''}<div class="team">${u.team.map(m=>chip(m)).join('')}</div></div></div></div>`;
-  case 'enc': return `<div class="u"><div class="box enc"><div class="u-hd small">${esc(u.title)}</div><div class="team">${u.team.map(m=>`<div class="tm">${m.img&&m.img[0]?img(m.img[0]):''}<div><b>${esc(m.n.join(' / '))}</b>${m.x.length?`<small>${esc(m.x.join(' · '))}</small>`:''}${m.lv?lvTxt(m.lv):''}</div><button class="ball sm" data-caught="${m.key}" title="Caught?"></button></div>`).join('')}</div>${u.notes.length?`<div class="tnote">${esc(u.notes.join(' · '))}</div>`:''}${u.prize?`<div class="tnote" title="${u.src?esc('Prize: '+u.src.from+' – '+u.src.page):''}">Prize: ${esc(u.prize)}</div>`:''}</div></div>`;
+  case 'enc': return `<div class="u"><div class="box enc"><div class="u-hd small">${esc(u.title)}</div><div class="team">${u.team.map(m=>`<div class="tm">${sticker(m.n[0],'sm')}<div><b>${esc(m.n.join(' / '))}</b>${m.x.length?`<small>${esc(m.x.join(' · '))}</small>`:''}${m.lv?lvTxt(m.lv):''}</div><button class="ball sm" data-caught="${m.key}" title="Caught?"></button></div>`).join('')}</div>${u.notes.length?`<div class="tnote">${esc(u.notes.join(' · '))}</div>`:''}${u.prize?`<div class="tnote" title="${u.src?esc('Prize: '+u.src.from+' – '+u.src.page):''}">Prize: ${esc(u.prize)}</div>`:''}</div></div>`;
   case 'table': return `<div class="u"><table class="gt gen">${u.title?`<thead><tr><th colspan="9">${esc(u.title)}</th></tr></thead>`:''}<tbody>${u.rows.map(r=>r.sub?`<tr><td colspan="9" class="sub">${esc(r.sub)}</td></tr>`:`<tr>${r.cells.map(c=>`<td>${c.img.filter(Boolean).map(s=>img(s,'timg')).join('')}${c.h}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
   }
   return '';
@@ -75,7 +88,7 @@ R.gymRight=function(g,ch,pageNo,diff){
   const tips=g.sections.find(s=>/tips/i.test(s.title));
   return `<div class="pin-in gym gcol"><div class="phead"><div class="kicker">${esc(g.title)}</div><h2>Leader's Team</h2></div>
    <div class="diffs">${g.teams.map(x=>`<button data-gym="${g.no}" data-diff="${esc(x.diff)}" class="${x===t?'on':''}">${esc(x.diff)}</button>`).join('')}</div>
-   <div class="gteam n${t.mons.length}">${t.mons.map(m=>`<div class="gmon">${m.img?img(m.img):''}<div class="gm"><b>${esc(m.name)}</b> <i>Lv.${m.lv||'TBD'}</i><div>${(m.type||'').split('/').map(x=>x.trim()).filter(Boolean).map(x=>`<span class="ty" style="background:${(window.TYPE_COLORS||{})[x]||'#777'}">${esc(x)}</span>`).join('')}</div>
+   <div class="gteam n${t.mons.length}">${t.mons.map(m=>`<div class="gmon">${sticker(m.name,'lg')}<div class="gm"><b>${esc(m.name)}</b> <i>Lv.${m.lv||'TBD'}</i><div>${(m.type||'').split('/').map(x=>x.trim()).filter(Boolean).map(x=>`<span class="ty" style="background:${(window.TYPE_COLORS||{})[x]||'#777'}">${esc(x)}</span>`).join('')}</div>
      <small><b>Item:</b> ${esc(m.item||'TBD')} · <b>Ability:</b> ${esc(m.ability||'—')}</small><small><b>Moves:</b> ${esc(m.moves||'TBD')}</small></div></div>`).join('')}</div>
    ${g.prize?`<p class="credit" style="margin:6px 0 0">Prize money: <b>${esc(g.prize)}</b> (per pokemon-uranium.fandom.com)</p>`:''}
    ${g.note?`<div class="box warn" style="margin-top:10px;font-size:11.5px">${g.note}</div>`:''}
@@ -99,6 +112,23 @@ R.contents=function(B,pageNo){
   return `<div class="pin-in toc">${`<div class="phead"><div class="kicker">The complete walkthrough</div><h2>Contents</h2></div>`}
   <div class="toccols">${B.chapters.map(c=>`<div class="tch" style="--tc:${c.color}"><button class="tchh" data-goto="${c.page}">${esc(c.name)}<b>${c.page}</b></button>${c.parts.map(n=>{const p=B.parts[n];return `<button class="tpt" data-goto="${p.page}"><span>${n}</span>${esc(p.title)}<b>${p.page}</b></button>`}).join('')}${c.gym!=null?`<button class="tpt gymln" data-goto="${B.gyms[c.gym].page}"><span>★</span>${esc(B.gyms[c.gym].title)}<b>${B.gyms[c.gym].page}</b></button>`:''}</div>`).join('')}</div>
   ${R.folio(pageNo,'CONTENTS')}</div>`;
+};
+
+/* Pokédex pages */
+R.dexEntry=function(d){
+  const L=window.LOCPAGE||{};
+  const evo=d.evo&&d.evo.length>1?d.evo.filter(e=>!e.mega).map((e,i,a)=>`${e.name===d.name?`<b>${esc(e.name)}</b>`:esc(e.name)}${i<a.length-1&&e.how?` <span class="how">→ ${esc(e.how.replace(/^Rare Candy\s*/,''))} →</span> `:i<a.length-1?' → ':''}`).join(''):'';
+  const megas=d.evo?d.evo.filter(e=>e.mega).map(e=>e.name):[];
+  const wh=d.where&&d.where.length?d.where.slice(0,6).map(w=>{const pg=L[w.loc];return pg!=null?`<button class="dloc" data-goto="${pg}" title="${esc(w.labels.join(', '))}">${esc(w.name)}<b>p.${pg}</b></button>`:`<span class="dloc">${esc(w.name)}</span>`}).join('')+(d.where.length>6?`<span class="dmore">+${d.where.length-6} more</span>`:''):`<span class="dav">${esc(d.avail||'Not listed in this binder; see the wiki page.')}</span>`;
+  return `<div class="dx" id="dex-${d.key}">${sticker(d.name)}<div class="dxb"><div class="dxh"><i>#${d.n}</i><b>${esc(d.name)}</b>${d.t.map(x=>`<span class="ty" style="background:${tcol(x)}">${esc(x)}</span>`).join('')}<button class="ball sm" data-caught="${d.key}" title="Caught?"></button></div>
+   ${evo?`<div class="dev">${evo}${megas.length?` <span class="how">· Mega: ${esc(megas.join(', '))}</span>`:''}</div>`:megas.length?`<div class="dev"><span class="how">Mega: ${esc(megas.join(', '))}</span></div>`:''}
+   <div class="dwh">${wh}</div>${d.patch?`<div class="dpatch">Patch ${esc(d.patch.text)} <a class="cite" href="${d.patch.src}" target="_blank" rel="noopener">[patch notes]</a></div>`:''}</div></div>`;
+};
+R.dexPage=function(desc,pageNo){
+  const D=window.DEX||[], list=D.slice(desc.a,desc.b);
+  const head=desc.open?`<div class="phead opener"><div class="kicker">Appendix · Tandor Pokédex</div><h2>Pokédex</h2><div class="num">${D.length}</div></div><p class="credit dxintro">All ${D.length} Tandor entries in wiki dex order: number, type, evolution line and where this binder lists it (tap a location to jump). Data: <a href="https://pokemon-uranium.fandom.com/wiki/Pok%C3%A9dex" target="_blank" rel="noopener">pokemon-uranium.fandom.com/wiki/Pokédex</a> · CC BY-SA 3.0. Stickers are type-coloured chips, not game sprites.</p>`
+    :`<div class="rhead"><span class="rp">POKéDEX</span><span class="rt">#${list[0]?list[0].n:''} – #${list.length?list[list.length-1].n:''}</span></div>`;
+  return `<div class="pin-in gen dexpg">${head}<div class="flow">${list.map(R.dexEntry).join('')}</div>${R.folio(pageNo,'POKéDEX')}</div>`;
 };
 window.R=R;
 })();
