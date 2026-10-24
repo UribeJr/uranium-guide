@@ -5,7 +5,7 @@
   window.va = window.va || function(){ (window.vaq = window.vaq || []).push(arguments); };
   window.si = window.si || function(){ (window.siq = window.siq || []).push(arguments); };
   var web = /^https?:$/.test(location.protocol) && !/^(localhost|127\.|0\.0\.0\.0)/.test(location.hostname);
-  if(web){
+  if(web && window.GUIDE_INSIGHTS){ /* set window.GUIDE_INSIGHTS=true after enabling Analytics/Speed Insights in Vercel */
     ['/_vercel/insights/script.js','/_vercel/speed-insights/script.js'].forEach(function(src){
       var s=document.createElement('script'); s.src=src; s.defer=true; document.head.appendChild(s);
     });
@@ -22,12 +22,4 @@
       window.va('event',{name:name,data:d});
     }catch(e){}
   };
-})();
-/* Start fetching Three.js early only when the 3D intro will actually play (not for skippers or reduced motion). */
-(function(){
-  try{
-    var st=JSON.parse(localStorage.getItem('uranium-guide-v1')||'{}');
-    if(st.intro===false || (window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
-    var l=document.createElement('link'); l.rel='preload'; l.as='script'; l.href='vendor/three.min.js'; document.head.appendChild(l);
-  }catch(e){}
 })();
